@@ -141,8 +141,7 @@ geojson = pdk.Layer(
 testMap = pdk.Deck(layers=geojson, map_style="light_no_labels", initial_view_state=INITIAL_VIEW_STATE)
 
 st.subheader("Choose a species in the left sidebar to see a heatmap of which counties have reported more occurrences. Pan and zoom as desired.")
-st.markdown("<br>", unsafe_allow_html=True)
-st.subheader("Suggested species: purple loosestrife, multiflora rose, and oriental bittersweet.")
+st.text("Suggested species: purple loosestrife, multiflora rose, and oriental bittersweet.")
 st.markdown("<br><br><br>", unsafe_allow_html=True)
 st.pydeck_chart(pydeck_obj=testMap,use_container_width=True)
 st.markdown("<br>",unsafe_allow_html=True)
