@@ -140,9 +140,10 @@ geojson = pdk.Layer(
 
 testMap = pdk.Deck(layers=geojson, map_style="light_no_labels", initial_view_state=INITIAL_VIEW_STATE)
 
+st.markdown("---")
 st.subheader("Choose a species in the left sidebar to see a heatmap of which counties have reported more occurrences. Pan and zoom as desired.")
 st.text("Suggested species: purple loosestrife, multiflora rose, and oriental bittersweet.")
-st.markdown("<br><br><br>", unsafe_allow_html=True)
+st.markdown("<br><br>", unsafe_allow_html=True)
 st.pydeck_chart(pydeck_obj=testMap,use_container_width=True)
 st.markdown("<br>",unsafe_allow_html=True)
 st.markdown("Note: Pydeck tooltips do not work in Streamlit (reported bug). Values for %s are listed below." % (speciesSelect))
@@ -163,6 +164,7 @@ labels2 = getListKeys(countPerSelectedCounty)
 values2 = getListValues(countPerSelectedCounty)
 
 st.markdown("---")
+st.markdown("<br><br>",unsafe_allow_html=True)
 st.subheader("All reports for %s County, arranged by species. To view data for a new County, use the drop-down box in the left sidebar. Note: takes a while to load!" % (countySelect))
 newFig = go.Figure(go.Treemap(labels = labels2, values = values2, parents = parents1))
 st.plotly_chart(newFig, use_container_width=True)
