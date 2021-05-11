@@ -8,10 +8,8 @@ import plotly.graph_objects as go
 import pydeck as pdk
 import json
 
-#st.text("here's some testing!")
 
 st.title("Massachusetts Invasive Species Data Visualizations")
-#st.header("Massachusetts Invasive Species Data Visualizations")
 st.markdown("<br>", unsafe_allow_html=True)
 st.markdown("# Brenna Levitin")
 st.markdown("## IS 545: Advanced Data Visualization <br> University of Illinois, Urbana-Champaign <br> Spring 2021", unsafe_allow_html=True)
@@ -26,24 +24,15 @@ def get_dataframe():
     return dataframe
 
 dataframe = get_dataframe()
-#print(type(dataframe))
 
 counties = dataframe['Location'].unique()
-#print(counties)
 countiesNoNan = counties[0:14]
-#print(countiesNoNan)
 
 nativity = dataframe['Nativity'].unique()
-#print(nativity)
 nativityNoNan = nativity[0:3]
-#print(nativityNoNan)
 
 new_DF = dataframe.replace("nan", float("nan"))
-#print(type(new_DF))
-#print(new_DF)
 new_new_DF = new_DF.dropna(subset=['Location', 'Nativity'])
-#print(type(new_new_DF))
-#print(new_new_DF)
 
 
 testDict = {}
@@ -66,15 +55,12 @@ def getListValues(dict):
 
 labels1 = getListKeys(testDict)
 values1 = getListValues(testDict)
-#testLength = len(testDict)
-#print(testLength)
 parents1 = parentsList
 
-st.sidebar.subheader("Select a county")
-countySelect = st.sidebar.selectbox(' ', countiesNoNan)
-#st.sidebar.markdown("<br>", unsafe_allow_html=True)
 st.sidebar.subheader("Select a species by common name")
 speciesSelect = st.sidebar.selectbox(' ', labels1)
+st.sidebar.subheader("Select a county")
+countySelect = st.sidebar.selectbox(' ', countiesNoNan)
 st.sidebar.markdown("<br>", unsafe_allow_html=True)
 st.sidebar.markdown("EDDMapS. 2021. Early Detection & Distribution Mapping System. The University of Georgia - Center for Invasive Species and Ecosystem Health. Available online at http://www.eddmaps.org/; data downloaded 03/21/2021.")
 
@@ -89,7 +75,7 @@ aChart = alt.Chart(new_new_DF).mark_bar().encode(
 
 st.markdown("<br><br>", unsafe_allow_html=True)
 st.markdown("---")
-st.subheader("Breakdown of nativity for reports from each county")
+st.subheader("Breakdown of nativity for reports from each county.")
 st.markdown("<br><br><br>", unsafe_allow_html=True)
 st.altair_chart(aChart,use_container_width=True)
 
@@ -98,7 +84,7 @@ st.altair_chart(aChart,use_container_width=True)
 fig1 = go.Figure(go.Treemap(labels = labels1, values = values1, parents = parents1))
 
 st.markdown("---")
-st.subheader("All reports for Massachusetts, sorted by species and count")
+st.subheader("All reports for Massachusetts, sorted by species and count.")
 st.plotly_chart(fig1, use_container_width=True)
 
 
@@ -119,7 +105,7 @@ parents = ["", 'Nativity', 'Nativity', 'Nativity']
 fig = go.Figure(go.Treemap(labels = labels, values = values, parents = parents, marker_colors = ['white', 'light blue', 'orange', 'royal blue']))
 
 st.markdown("---")
-st.subheader("All reports for Massachusetts, sorted by nativity")
+st.subheader("All reports for Massachusetts, sorted by nativity.")
 st.plotly_chart(fig, use_container_width=True)
 
 
@@ -135,7 +121,6 @@ for c in countiesNoNan:
 
     countPerCounty[c.upper()] = len(selectedSpecCount[selectedSpecCount].index)
 
-#colorValue = 
 for place in DATA["features"]:
      county = place["properties"]["COUNTY"]
      if county in countPerCounty.keys():
@@ -156,13 +141,13 @@ geojson = pdk.Layer(
 testMap = pdk.Deck(layers=geojson, map_style="light_no_labels", initial_view_state=INITIAL_VIEW_STATE)
 
 st.subheader("Choose a species in the left sidebar to see a heatmap of which counties have reported more occurrences. Pan and zoom as desired.")
+st.markdown("<br>", unsafe_allow_html=True)
+st.subheader("Suggested species: purple loosestrife, multiflora rose, and oriental bittersweet.")
 st.markdown("<br><br><br>", unsafe_allow_html=True)
 st.pydeck_chart(pydeck_obj=testMap,use_container_width=True)
 st.markdown("<br>",unsafe_allow_html=True)
-st.markdown("Note: Pydeck tooltips do not work in Streamlit (reported bug). Values for the selected species are listed below.")
+st.markdown("Note: Pydeck tooltips do not work in Streamlit (reported bug). Values for %s are listed below." % (speciesSelect))
 st.table(pd.DataFrame(list(countPerCounty.items()),columns=["County","Total"]))
-#print(countPerCounty)
-
 
 
 
@@ -178,8 +163,7 @@ for s in labels1:
 labels2 = getListKeys(countPerSelectedCounty)
 values2 = getListValues(countPerSelectedCounty)
 
-newFig = go.Figure(go.Treemap(labels = labels2, values = values2, parents = parents1))
-
 st.markdown("---")
-st.subheader("All reports for %s County, arranged by species. To view data for a new County, use the drop-down box in the left sidebar. Note: takes a while!" % (countySelect))
+st.subheader("All reports for %s County, arranged by species. To view data for a new County, use the drop-down box in the left sidebar. Note: takes a while to load!" % (countySelect))
+newFig = go.Figure(go.Treemap(labels = labels2, values = values2, parents = parents1))
 st.plotly_chart(newFig, use_container_width=True)
