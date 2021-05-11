@@ -153,6 +153,10 @@ st.table(pd.DataFrame(list(countPerCounty.items()),columns=["County","Total"]))
 
 
 # Make a treemap of all species reported in a selected county by number of reports
+st.markdown("---")
+st.markdown("<br><br>",unsafe_allow_html=True)
+st.subheader("All reports for %s County, arranged by species. To view data for a new County, use the drop-down box in the left sidebar. Note: takes a while to load!" % (countySelect))
+
 countPerSelectedCounty = {}
 
 for s in labels1:
@@ -163,8 +167,5 @@ for s in labels1:
 labels2 = getListKeys(countPerSelectedCounty)
 values2 = getListValues(countPerSelectedCounty)
 
-st.markdown("---")
-st.markdown("<br><br>",unsafe_allow_html=True)
-st.subheader("All reports for %s County, arranged by species. To view data for a new County, use the drop-down box in the left sidebar. Note: takes a while to load!" % (countySelect))
 newFig = go.Figure(go.Treemap(labels = labels2, values = values2, parents = parents1))
 st.plotly_chart(newFig, use_container_width=True)
